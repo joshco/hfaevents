@@ -1,0 +1,175 @@
+/* Generic Styles */
+
+html, body {
+    background-color: #0050a0;
+    font-family: 'Open Sans', Arial, sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+
+}
+
+.clear {
+    clear: both;
+    height: 0;
+    overflow: hidden;
+}
+
+#container {
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 0px;
+    background-color: #FFF;
+    padding: 20px 40px;
+    border-width: 0;
+
+}
+
+h2 {
+    color: #0050a0;
+}
+
+a:link {
+    text-decoration: none;
+    color: #0050a0;
+}
+
+a:visited {
+    color: #0050a0;
+}
+
+h3 {
+    font-size: 18px;
+}
+
+ul {
+    list-style-type: none;
+    margin: auto;
+    padding: auto;
+}
+
+/* no margins for top level list */
+ul.event-list {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+
+p {
+    margin: 8px 10px;
+}
+
+i {
+    margin-right: 3px;
+}
+
+/* content specific styles */
+
+h3.details-heading {
+    margin-left: 10px;
+    margin-top: 0px;
+}
+
+.address {
+    font-weight: bold;
+}
+
+.event-details {
+    border-radius: 5px;
+    display: none;
+    background-color: #0050a0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #ffffff;
+
+}
+
+.attend-status {
+    display: none;
+    border-radius: 3px;
+    background-color: green;
+    color: #ffffff;
+    margin-left: 5px;
+
+    font-size: 18px;
+    padding: 5px;
+}
+
+a.attend-button {
+    border-radius: 5px;
+    text-align: left;
+    font-weight: bold;
+    padding: 5px 10px;
+    font-size: 16px;
+    margin-top: 15px;
+    background-color: green;
+    color: #fff;
+    border-radius: 3px;
+}
+
+.attend-button-div {
+    margin: 10px 10px 10px 10px;
+
+}
+
+/* Media Query for small devices */
+@media screen and (max-width: 1024px) {
+
+    /* general style */
+    body {
+        font-size: 30px;
+    }
+
+    #container {
+        width: 100%;
+        margin: 0 0 0 0;
+        padding: 0 0 0 0;
+
+    }
+
+    h3 {
+        font-size: 28;
+    }
+
+    h1 {
+        font-size: 60px;
+    }
+
+    /* content specific style */
+
+    .attend-status {
+        width: 100px;
+        font-size: 14;
+    }
+
+
+    a.event-title {
+        font-size: 60px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+
+    a.attend-button {
+        border-radius: 5px;
+        text-align: left;
+        font-weight: bold;
+        padding: 5px 10px;
+        font-size: 42px;
+        margin-top: 15px;
+        background-color: green;
+        color: #fff;
+        border-radius: 3px;
+    }
+
+    .attend-status {
+
+        font-size: 28px;
+
+    }
+
+    .event-description {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+
+}
