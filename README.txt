@@ -12,7 +12,7 @@ I use ngrok tunneling for mobile testing
 sort ascending instead of descending (show oldest events first)
 properly iterate over multiple addresses
 changed sample data for the first event "Milford Phone Bank" to have multiple locations, multiple shifts and multiple tiers to check app compat
-added toggle details text link
+added toggle details text link (clicking on the event title or description always worked)
 fix date formatting for mobile
 make "attend" button change text after attend
 
