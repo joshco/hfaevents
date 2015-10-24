@@ -82,6 +82,12 @@ h3.details-heading {
     padding-bottom: 10px;
     color: #ffffff;
 
+
+}
+
+.event-description {
+    /* watch out for long strings like urls that will mess up layout */
+    overflow: hidden;
 }
 
 .attend-status {
@@ -93,6 +99,7 @@ h3.details-heading {
 
     font-size: 18px;
     padding: 5px;
+    /* keep icon and text together */
     white-space: nowrap;
 }
 

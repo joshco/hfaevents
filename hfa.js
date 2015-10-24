@@ -18,10 +18,11 @@ function loadTargets() {
 
 
     // Load Events
+    //
+    var events_live= 'https://www.hillaryclinton.com/api/events/events?lat=40.7464969&lng=-74.00944709999999&radius=250&earliestTime=2015-10-22T17%3A41%3A38.137Z&status=confirmed&visibility=public&perPage=100';
+    var events_static='events-results.json';
 
-    // https://www.hillaryclinton.com/api/events/events?lat=40.7464969&lng=-74.00944709999999
-    // https://www.hillaryclinton.com/api/events/events?lat=40.7464969&lng=-74.00944709999999&radius=250&earliestTime=2015-10-22T17"%"3A41"%"3A38.137Z&status=confirmed&visibility=public&perPage=100
-    $.getJSON('https://www.hillaryclinton.com/api/events/events?lat=40.7464969&lng=-74.00944709999999&radius=250&earliestTime=2015-10-22T17%3A41%3A38.137Z&status=confirmed&visibility=public&perPage=100', function (data) {
+    $.getJSON(events_static, function (data) {
             targets = {};
             items = [];
             json = data;
@@ -78,7 +79,7 @@ function loadTargets() {
 
                 details = '<h3 class="details-heading">Details</h3>' +
                         event_locations.join("") +
-                    '<div class="attend-button-div"><a class="attend-button" href="#!" onClick="attendEvent(' + event.id + ')">Attend</a></div>'
+                    '<div class="attend-button-div"><a id="button-' + event.id + '" class="attend-button" href="#!" onClick="attendEvent(' + event.id + ')">Attend</a></div>'
 
 
                 items.push("<li event='" + ev.id + "'><h2><a class='event-title' href='#!' onClick='eventDetails(" + ev.id + ")' class='event-link' id='" + ev.id + "'>" + ev.name + "</a><span " +
@@ -133,16 +134,20 @@ function formatDate(date_str) {
 
 function attendEvent(eid) {
     var id = '#attend-' + eid;
+    var button_id='#button-' + eid;
+
     var isVisible = $(id).is(":visible");
 
     if (isVisible) {
         // turn it off
         attendState[eid] = false;
         $(id).hide();
+        $(button_id).html('Attend');
     } else {
         // turn it on
         attendState[eid] = true;
         $(id).show();
+        $(button_id).html('Bail');
     }
     saveAttendState();
     return false;
@@ -155,6 +160,8 @@ function renderAttendState(events) {
         if (attendState[eid] == true) {
             console.log("Attending eid " + eid);
             var id = '#attend-' + event.id;
+            var button_id='#button-' + event.id;
+            $(button_id).html('Bail');
             $(id).show();
         }
     })
