@@ -19,24 +19,32 @@ function loadTargets() {
 
     // Load Events
 
-    $.getJSON("events-results.json", function (data) {
+    // https://www.hillaryclinton.com/api/events/events?lat=40.7464969&lng=-74.00944709999999
+    // https://www.hillaryclinton.com/api/events/events?lat=40.7464969&lng=-74.00944709999999&radius=250&earliestTime=2015-10-22T17"%"3A41"%"3A38.137Z&status=confirmed&visibility=public&perPage=100
+    $.getJSON('https://www.hillaryclinton.com/api/events/events?lat=40.7464969&lng=-74.00944709999999&radius=250&earliestTime=2015-10-22T17%3A41%3A38.137Z&status=confirmed&visibility=public&perPage=100', function (data) {
             targets = {};
             items = [];
             json = data;
             events = data.events;
             events.sort(function (e1, e2) {
-                return new Date(e2.startDate) - new Date(e1.startDate);
+                return new Date(e1.startDate) - new Date(e2.startDate);
             });
 
             events.forEach(function (ev) {
                 var event = ev;
 
-                var event_locations = []
+                var event_locations = [];
                 // if there are locations, iterate
                 if (event.locations.length > 0) {
-                    loc = event.locations[0];
+                    if (event.locations.length > 1) {
+                        console.log("multiple locations " + event.name);
+                    }
+                    event.locations.forEach(function(loc) {
+
+
+                    //loc = event.locations[0];
                     // Assumption: the JSON will always have these fields even if blank
-                    event_locations.push(["<p><i class='fa fa-home'></i>&nbsp;Address: ", loc.address1, loc.address2, loc.city, loc.state, loc.postalCode, "</p>"].join(' '));
+                    event_location=["<p><i class='fa fa-home'></i>&nbsp;Address: ", loc.address1, loc.address2, loc.city, loc.state, loc.postalCode, "</p>"].join(' ');
 
                     // iterate shifts
                     var shifts = [];
@@ -47,35 +55,40 @@ function loadTargets() {
                         });
                         shifts.push('</ul></div>');
                     }
-                    ;
 
-                    // iteracte tiers
+                    // iterate tiers
                     var tiers = [];
                     if (loc.tiers.length > 0) {
                         tiers.push("<p class='event-tiers'><i class='fa fa-dollar'></i>&nbsp;Tiers :</p><ul>");
                         loc.tiers.forEach(function (tier) {
-                            tiers.push("<li>" + tier.title + " Price: " + tier.price + "</li>");
+                            tiers.push("<li>" + tier.title + " Price: $" + tier.price + "</li>");
 
                         });
                         tiers.push("</ul>");
 
 
                     }
+
+                    event_locations.push('<div class="address">' + event_location + '</div><div class="shifts-tiers">' + shifts.join("\n") +
+                    tiers.join("\n") + '</div>')
+                    });
+
                 }
-                ;
 
 
-                details = '<h3 class="details-heading">Details</h3>\
-    <div class="address">' + event_locations + '</div>' + shifts.join("\n") +
-                    '<div class="shifts">' + tiers.join("\n") + '</div>' +
+                details = '<h3 class="details-heading">Details</h3>' +
+                        event_locations.join("") +
                     '<div class="attend-button-div"><a class="attend-button" href="#!" onClick="attendEvent(' + event.id + ')">Attend</a></div>'
 
 
                 items.push("<li event='" + ev.id + "'><h2><a class='event-title' href='#!' onClick='eventDetails(" + ev.id + ")' class='event-link' id='" + ev.id + "'>" + ev.name + "</a><span " +
                     "id='attend-" + event.id + "' class='attend-status'><i class='fa fa-check-circle'></i>&nbsp;Attending</span></h2>");
-                items.push("<p class='event-date'>" + formatDate(event.startDate) + "</p>");
+                items.push("<p class='event-date'><em>" + formatDate(event.startDate) + "</em>" );
+                items.push("&nbsp;<a class='toggle-details' href='#!' onClick='eventDetails(" + ev.id + ")'>Toggle Details</a></p>");
                 items.push("<p class='event-description' onClick='eventDetails(" + ev.id + ")'>" + ev.description + "<p>");
+
                 items.push("<div class='event-details' id='details-" + event.id + "''>" + details + "</div>");
+
                 items.push("</li>");
 
                 ev.locations.forEach(function (loc) {
@@ -105,7 +118,7 @@ function eventDetails(eid) {
 }
 
 function formatDate(date_str) {
-    // crap - this apparently doesnt work on mobile - but ran out time to make work
+    // fixed
 
     var options = {
         weekday: "long", year: "numeric", month: "short",
@@ -113,10 +126,10 @@ function formatDate(date_str) {
     };
     var date = new Date(date_str);
 
-    formatted_date = date.toLocaleTimeString("en-us", options);
+    formatted_date = date.toLocaleString("en-us", options);
     return formatted_date;
 
-};
+}
 
 function attendEvent(eid) {
     var id = '#attend-' + eid;
